@@ -1,0 +1,53 @@
+"hg7122
+
+"1.0
+
+loadplugins '\.(js|penta)$'
+colorscheme zenburn
+group user
+map -count -modes=n h <count>gT
+map -count -modes=n l <count>gt
+map -count -modes=n,v j -builtin <count>10j
+map -count -modes=n,v k -builtin <count>10k
+map -count -modes=n J <count><C-d>
+map -count -modes=n K <count><C-u>
+map -modes=n,v <Leader>d -ex :dialog downloads
+map -modes=n,v <Leader>dd -ex :dialog downloads
+
+map -count -modes=n Y <count><yank-selection>
+
+" Yank (copy) to default clipboard with Y
+" Will not yank to default clipboard by default.
+" See:
+" Issue 719 - dactyl - Copy with 'Y' is not pasted - A Vim-like five-fingered
+" interface for Firefox and other XULRunner-based apps. - Google Project Hosting
+" https://code.google.com/p/dactyl/issues/detail?id=719#c10
+js editor.defaultRegister="+"
+
+
+
+
+set guioptions=ns
+
+nmap <C-c> <Nop>
+
+nmap -modes=n <Leader>1 -ex set defsearch=google-ssl  | echo "google"
+nmap -modes=n <Leader>2 -ex set defsearch=youtube | echo "youtube"
+nmap -modes=n <Leader>3 -ex set defsearch=wikipedia-ru | echo "wikipedia-ru"
+nmap -modes=n <Leader>4 -ex set defsearch=wikipedia-en | echo "wikipedia-en"
+nmap -modes=n <Leader>5 -ex set defsearch=googletranslate | echo "googletranslate"
+nmap -modes=n <Leader>6 -ex set defsearch=googlemaps | echo "googlemaps"
+nmap -modes=n <Leader>7 -ex set defsearch=thepiratebay-org | echo "thepiratebay-org"
+nmap -modes=n <Leader>8 -ex set defsearch=imdb | echo "imdb"
+nmap -modes=n <Leader>9 -ex set defsearch=stack-overflow | echo "stack-overflow"
+nmap -modes=n <Leader>0 -ex set defsearch=google-images | echo "google-images"
+nmap -modes=n <Leader>g -ex set defsearch=github | echo "github"
+nmap -modes=n <Leader>t -ex set defsearch=pub-hd | echo "pub-hd"
+highlight Hint font-family: monospace; font-size: 12px; font-weight: bold; text-transform: uppercase; color: #00ff00; background-color: black; border-color: ButtonShadow; border-width: 0px; border-style: solid; padding: 0px 1px 0px 1px;
+
+set passkeys=imgur.com:<Left><Right>
+set passkeys+=facebook.com:<Left><Right>
+" vim: set ft=pentadactyl:
+set hintkeys=asdfghjkl
+set hintkeys+=r,m
+
