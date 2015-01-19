@@ -19,6 +19,7 @@ echo "...done"
 
 # change to the dotfiles directory
 echo "Changing to the $dir directory"
+mkdir $dir
 cd $dir
 echo "...done"
 
