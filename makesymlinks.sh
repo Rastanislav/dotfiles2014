@@ -6,9 +6,9 @@
 
 ########## Variables
 
-dir=~/dotfiles                    # dotfiles directory
+dir=~/dotfiles2014                    # dotfiles directory
 olddir=~/dotfiles_old             # old dotfiles backup directory
-files="bashrc vimrc vim zshrc zpreztorc tmux.conf pentadactylrc"    # list of files/folders to symlink in homedir
+files="bashrc vimrc zshrc zpreztorc tmux.conf pentadactylrc"    # list of files/folders to symlink in homedir
 
 ##########
 
@@ -30,3 +30,4 @@ for file in $files; do
     echo "Creating symlink to $file in home directory."
     ln -s $dir/.$file ~/.$file
 done
+    ln -s $dir/vim ~/.vim
