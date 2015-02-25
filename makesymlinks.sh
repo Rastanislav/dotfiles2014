@@ -6,7 +6,7 @@
 
 ########## Variables
 
-dir=~/dotfiles2014                    # dotfiles directory
+dir=~/dotfiles                    # dotfiles directory
 olddir=~/dotfiles_old             # old dotfiles backup directory
 files="bashrc vimrc zshrc zpreztorc tmux.conf pentadactylrc"    # list of files/folders to symlink in homedir
 
