@@ -31,8 +31,8 @@ s0_arrow_base_color = #e6e6e6d9
 s0_arrow_shadow_color = #dcdcdcd9
 
 [commands]
-s0_command0 = mvmouse
-s0_command1 = mvmouse2
+s0_command0 = ${HOME}/bin/mvmouse
+s0_command1 = ${HOME}/bin/mvmouse2
 s0_run_command0_key = <Control><Alt>j
 s0_run_command1_key = <Control><Alt>k
 
