@@ -28,21 +28,9 @@ echo "Installing packages"
 	sudo apt-get install --yes xdotool
 	sudo apt-get install --yes flashplugin-installer
 	sudo apt-get install --yes mplayer
+	sudo apt-get install --yes deluge
 echo "Done installing packages"
 
-
-echo "Installing FireFox"
-	cd ${HOME}
-	mkdir penta
-	cd penta
-	git clone https://gist.github.com/d7a57150aaccaae0e06d.git gist
-	cp gist/penta_ff34.patch\  ${HOME}/penta 
-	hg clone http://dactyl.googlecode.com/hg/ dactyl
-	cd dactyl/
-	patch -p1 < ../penta_ff34.patch\  
-	make -C pentadactyl xpi
-	firefox downloads/pentadactyl-1.2pre.xpi
-echo "FireFox installed"
 
 
 echo "Cloning bin directory"
@@ -129,15 +117,24 @@ echo "Installing Skype"
 	sudo apt-get install sni-qt sni-qt:i386
 echo "Done installing Skype"
 
-echo "Installing Torrent Client"
-	sudo apt-get update 
-	sudo apt-get install --yes deluge
-echo "Done installing Torrent Client"
 
 echo "Organizing launch pad"
-
-gsettings set com.canonical.Unity.Launcher favorites "['application://firefox.desktop', 'application://skype.desktop', 'application://gnome-terminal.desktop', 'application://nautilus.desktop', 'application://deluge.desktop', 'application://vlc.desktop', 'application://libreoffice-writer.desktop', 'application://libreoffice-calc.desktop', 'application://libreoffice-impress.desktop', 'application://ubuntu-software-center.desktop', 'application://ubuntu-amazon-default.desktop', 'application://unity-control-center.desktop', 'unity://running-apps', 'unity://expo-icon', 'unity://devices']"
+	gsettings set com.canonical.Unity.Launcher favorites "['application://firefox.desktop', 'application://skype.desktop', 'application://gnome-terminal.desktop', 'application://nautilus.desktop', 'application://deluge.desktop', 'application://vlc.desktop', 'application://libreoffice-writer.desktop', 'application://libreoffice-calc.desktop', 'application://libreoffice-impress.desktop', 'application://ubuntu-software-center.desktop', 'application://ubuntu-amazon-default.desktop', 'application://unity-control-center.desktop', 'unity://running-apps', 'unity://expo-icon', 'unity://devices']"
 echo "Done organizing launch pad"
+
+
+echo "Installing FireFox"
+	cd ${HOME}
+	mkdir penta
+	cd penta
+	git clone https://gist.github.com/d7a57150aaccaae0e06d.git gist
+	cp gist/penta_ff34.patch\  ${HOME}/penta 
+	hg clone http://dactyl.googlecode.com/hg/ dactyl
+	cd dactyl/
+	patch -p1 < ../penta_ff34.patch\  
+	make -C pentadactyl xpi
+	firefox downloads/pentadactyl-1.2pre.xpi
+echo "FireFox installed"
 
 # shit that doesn't work after install:
 #1)VIM: cant visually drag shit (S-UP/DOWN)
