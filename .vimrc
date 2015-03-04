@@ -44,7 +44,6 @@ NeoBundle "MarcWeber/vim-addon-mw-utils"
 NeoBundle "tomtom/tlib_vim"
 NeoBundle "garbas/vim-snipmate"
 NeoBundle "honza/vim-snippets"
-NeoBundle "aihoooooooo/glowshi-ft.vim"
 NeoBundle "Townk/vim-autoclose"
 NeoBundle "junegunn/goyo.vim"
 NeoBundle "mattn/gist-vim"
@@ -53,6 +52,9 @@ NeoBundle "t9md/vim-quickhl"
 NeoBundle "scrooloose/nerdcommenter"
 NeoBundle "shinokada/dragvisuals.vim"
 NeoBundle "christoomey/vim-tmux-navigator"
+NeoBundle "vim-scripts/ccase.vim"
+NeoBundle "mhinz/vim-startify"
+NeoBundle "krisajenkins/vim-pipe"
 NeoBundleCheck
 
 
