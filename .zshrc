@@ -406,4 +406,5 @@ alias vima='vim -p *'
 
          bindkey '5D' emacs-backward-word
          bindkey '5C' emacs-forward-word
+         export TERM=xterm-256color
          tmux -2
