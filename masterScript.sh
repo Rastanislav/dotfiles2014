@@ -65,6 +65,11 @@ echo "Installing Tmux"
 	sudo make install 
 echo "Done installing Tmux"
 
+echo "Installing dotfiles"
+	git clone https://github.com/Rastanislav/dotfiles2014.git dotfiles
+	cd dotfiles
+	./makesymlinks.sh
+echo "Done installing dotfiles"
 
 echo "Installing Vim"
 	cd ${HOME}/bin
@@ -96,11 +101,6 @@ echo "Installing Vim"
 # comment those lines in /home/rastanislav/dotfiles/vim/bundle/glowshi-ft.vim/plugin/glowshi_ft.vim
 echo "Done installing Vim"
 
-echo "Installing dotfiles"
-	git clone https://github.com/Rastanislav/dotfiles2014.git dotfiles
-	cd dotfiles
-	./makesymlinks.sh
-echo "Done installing dotfiles"
 
 
 echo "Installing prezto dotfiles"
