@@ -1,38 +1,5 @@
 #!/bin/bash
 
-
-echo "Installing packages"
-    sudo add-apt-repository ppa:videolan/stable-daily
-	sudo add-apt-repository ppa:deluge-team/ppa
-	sudo apt-get update
-	sudo apt-get install --yes mercurial 
-	sudo apt-get install --yes zsh
-	sudo apt-get install --yes libevent-dev
-	sudo apt-get install --yes python-dev 
-	sudo apt-get install --yes python3-dev 
-	sudo apt-get install --yes ruby 
-    sudo apt-get install --yes ruby-dev 
-	sudo apt-get install --yes libx11-dev 
-	sudo apt-get install --yes libxt-dev
-	sudo apt-get install --yes libgtk2.0-dev
-	sudo apt-get install --yes ncurses-dev
-	sudo apt-get install --yes wireshark
-	sudo apt-get install --yes solfege
-	sudo apt-get install --yes tuxguitar-alsa
-	sudo apt-get install --yes tuxguitar-jsa
-	sudo apt-get install --yes vlc
-	sudo apt-get install --yes git
-	sudo apt-get install --yes html2text
-	sudo apt-get install --yes compizconfig-settings-manager
-	sudo apt-get install --yes compiz-plugins
-	sudo apt-get install --yes xdotool
-	sudo apt-get install --yes flashplugin-installer
-	sudo apt-get install --yes mplayer
-	sudo apt-get install --yes deluge
-echo "Done installing packages"
-
-
-
 echo "Cloning bin directory"
 	cd ${HOME}
 	git clone https://github.com/Rastanislav/bin.git
@@ -41,6 +8,12 @@ echo "Cloning bin directory"
 	sudo make install
 echo "Done cloning bin directory"
 
+
+echo "Installing dotfiles"
+	git clone https://github.com/Rastanislav/dotfiles2014.git dotfiles
+	cd dotfiles
+	./makesymlinks.sh
+echo "Done installing dotfiles"
 
 echo "Installing ctags"
 	cd ${HOME}/bin
@@ -65,11 +38,6 @@ echo "Installing Tmux"
 	sudo make install 
 echo "Done installing Tmux"
 
-echo "Installing dotfiles"
-	git clone https://github.com/Rastanislav/dotfiles2014.git dotfiles
-	cd dotfiles
-	./makesymlinks.sh
-echo "Done installing dotfiles"
 
 echo "Installing Vim"
 	cd ${HOME}/bin
@@ -131,7 +99,7 @@ echo "Installing FireFox"
 	cp gist/penta_ff34.patch\  ${HOME}/penta 
 	hg clone http://dactyl.googlecode.com/hg/ dactyl
 	cd dactyl/
-	patch -p1 < ../penta_ff34.patch\  
+	patch -p1 < ../penta_ff34.patch\   
 	make -C pentadactyl xpi
 	firefox downloads/pentadactyl-1.2pre.xpi
 echo "FireFox installed"
