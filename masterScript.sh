@@ -10,8 +10,8 @@ echo "Done cloning bin directory"
 
 
 echo "Installing dotfiles"
-	git clone https://github.com/Rastanislav/dotfiles2014.git {$HOME}/dotfiles
-	cd {$HOME}/dotfiles
+	git clone https://github.com/Rastanislav/dotfiles2014.git ${HOME}/dotfiles
+	cd ${HOME}/dotfiles
 	./makesymlinks.sh
 echo "Done installing dotfiles"
 
