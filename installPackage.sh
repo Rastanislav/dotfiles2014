@@ -7,6 +7,7 @@ echo "Installing packages"
 	sudo apt-get install --yes mercurial
 	sudo apt-get install --yes zsh
 	sudo apt-get install --yes gimp
+	sudo apt-get install --yes playitslowly
 	sudo apt-get install --yes libevent-dev
 	sudo apt-get install --yes python-dev
 	sudo apt-get install --yes python3-dev
