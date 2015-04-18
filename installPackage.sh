@@ -31,4 +31,5 @@ echo "Installing packages"
 	sudo apt-get install --yes mplayer
 	sudo apt-get install --yes deluge
 	sudo apt-get install --yes nodejs
+	sudo apt-get install --yes npm
 echo "Done installing packages"
