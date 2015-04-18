@@ -30,4 +30,5 @@ echo "Installing packages"
 	sudo apt-get install --yes flashplugin-installer
 	sudo apt-get install --yes mplayer
 	sudo apt-get install --yes deluge
+	sudo apt-get install --yes nodejs
 echo "Done installing packages"
