@@ -3,7 +3,9 @@
 echo "Installing packages"
 	sudo add-apt-repository ppa:videolan/stable-daily
 	sudo add-apt-repository ppa:deluge-team/ppa
+	sudo apt-add-repository ppa:webupd8team/java
 	sudo apt-get update
+	sudo apt-get install --yes oracle-java8-installer
 	sudo apt-get install --yes mercurial
 	sudo apt-get install --yes zsh
 	sudo apt-get install --yes gimp
