@@ -104,6 +104,8 @@ echo "Installing FireFox"
 	firefox downloads/pentadactyl-1.2pre.xpi
 echo "FireFox installed"
 
+dpkg-divert --local --divert /usr/bin/ack --rename --add /usr/bin/ack-grep 
+
 # shit that doesn't work after install:
 #1)VIM: cant visually drag shit (S-UP/DOWN)
 #2)VIM: comment out lines for ";" in glowshift plugin
