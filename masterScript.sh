@@ -105,6 +105,9 @@ echo "Installing FireFox"
 echo "FireFox installed"
 
 dpkg-divert --local --divert /usr/bin/ack --rename --add /usr/bin/ack-grep 
+cd ${HOME}
+git clone https://github.com/ryanoasis/nerd-fonts.git
+sh ${HOME}/nerd-fonts/install.sh 
 
 # shit that doesn't work after install:
 #1)VIM: cant visually drag shit (S-UP/DOWN)
