@@ -34,4 +34,5 @@ echo "Installing packages"
 	sudo apt-get install --yes deluge
 	sudo apt-get install --yes nodejs
 	sudo apt-get install --yes npm
+	sudo apt-get install --yes ack-grep
 echo "Done installing packages"
