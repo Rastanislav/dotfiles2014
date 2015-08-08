@@ -109,6 +109,12 @@ cd ${HOME}
 git clone https://github.com/ryanoasis/nerd-fonts.git
 sh ${HOME}/nerd-fonts/install.sh 
 
+cd ${HOME}
+git clone https://github.com/junegunn/fzf.git
+./${HOME}/fzf/install
+
+
+
 # shit that doesn't work after install:
 #1)VIM: cant visually drag shit (S-UP/DOWN)
 #2)VIM: comment out lines for ";" in glowshift plugin
