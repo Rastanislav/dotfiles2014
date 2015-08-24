@@ -35,4 +35,5 @@ echo "Installing packages"
 	sudo apt-get install --yes nodejs
 	sudo apt-get install --yes npm
 	sudo apt-get install --yes ack-grep
+	sudo apt-get install --yes aircrack-ng
 echo "Done installing packages"
