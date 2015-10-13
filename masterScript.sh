@@ -113,7 +113,7 @@ cd ${HOME}
 git clone https://github.com/junegunn/fzf.git
 ./${HOME}/fzf/install
 
-
+gvfs-mime --set x-scheme-handler/magnet deluge.desktop
 
 # shit that doesn't work after install:
 #1)VIM: cant visually drag shit (S-UP/DOWN)
