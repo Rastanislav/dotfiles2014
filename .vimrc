@@ -1,4 +1,3 @@
-
   	set nocompatible               " Be iMproved
 
   	set runtimepath+=~/.vim/bundle/neobundle.vim/
@@ -24,7 +23,10 @@ filetype plugin indent on
 " this will conveniently prompt you to install
 "them.
 "
-"
+NeoBundleLazy "junegunn/fzf"
+NeoBundle "chrisbra/vim-diff-enhanced"
+NeoBundle "ryanoasis/vim-devicons"
+NeoBundle "saihoooooooo/glowshi-ft.vim"
 NeoBundle "oblitum/rainbow"
 NeoBundle "tpope/vim-surround"
 NeoBundle "scrooloose/nerdtree"
@@ -33,7 +35,6 @@ NeoBundle "majutsushi/tagbar"
 NeoBundle "tpope/vim-fugitive"
 NeoBundle "junegunn/vim-easy-align"
 NeoBundle "Lokaltog/powerline"
-NeoBundle "davidhalter/jedi-vim"
 NeoBundle "kshenoy/vim-signature"
 NeoBundle 'mileszs/ack.vim'
 NeoBundle "godlygeek/tabular"
@@ -55,6 +56,8 @@ NeoBundle "christoomey/vim-tmux-navigator"
 NeoBundle "vim-scripts/ccase.vim"
 NeoBundle "mhinz/vim-startify"
 NeoBundle "krisajenkins/vim-pipe"
+NeoBundle "tmhedberg/matchit"
+NeoBundle "valloric/MatchTagAlways"
 NeoBundleCheck
 
 
@@ -143,7 +146,7 @@ set smarttab
 set ai
 
 "1 tab == 4 spaces
-"set shiftwidth=4
+set shiftwidth=4
 "set tabstop=4
 "show if file was externally edited
 
@@ -548,7 +551,7 @@ nnoremap <silent> c-j :TmuxNavigateDown<cr>
 nnoremap <silent> c-k :TmuxNavigateUp<cr>
 nnoremap <silent> c-l :TmuxNavigateRight<cr>
 "nnoremap <silent>  :TmuxNavigatePrevious<cr>
-inoremap jj <esc>
+inoremap jj <esc>l
 
 
 set undofile                " Save undo's after file closes
@@ -582,3 +585,39 @@ map ; :
  endfunction
   
  map dib :call DeleteInnerBlock() <cr>
+ map <leader><space> :nohlsearch<cr>
+
+
+ highlight DiffAdd cterm=none ctermfg=Black ctermbg=Green gui=none guifg=fg guibg=Blue
+ highlight DiffDelete cterm=none ctermfg=Black ctermbg=Red gui=none guifg=fg guibg=Blue
+ highlight DiffChange cterm=none ctermfg=Black ctermbg=Blue gui=none guifg=fg guibg=Blue
+ highlight DiffText cterm=none ctermfg=Black ctermbg=Yellow gui=none guifg=bg guibg=White
+
+ let g:mta_filetypes = {
+     \ 'html' : 1,
+     \ 'xhtml' : 1,
+     \ 'xml' : 1,
+     \ 'jinja' : 1,
+     \ 'php' : 1,
+     \}
+
+ highlight MatchTag ctermfg=black ctermbg=white guifg=black guibg=white
+
+ vmap <Enter> <Plug>(EasyAlign)
+
+
+let g:glowshi_ft_no_default_key_mappings = s:true
+map f <plug>(glowshi-ft-f)
+map F <plug>(glowshi-ft-F)
+map t <plug>(glowshi-ft-t)
+map T <plug>(glowshi-ft-T)
+map , <plug>(glowshi-ft-opposite)
+
+" highlight
+let g:glowshi_ft_selected_hl_link = 'White'
+let g:glowshi_ft_candidates_hl_link = 'Black'
+
+
+
+" timeout
+let g:glowshi_ft_timeoutlen = 99999
