@@ -8,7 +8,6 @@ echo "Installing packages"
 	sudo apt-get install --yes oracle-java8-installer
 	sudo apt-get install --yes mercurial
 	sudo apt-get install --yes python-pip
-	sudo pip install subliminal
 	sudo apt-get install --yes zsh
 	sudo apt-get install --yes gimp
 	sudo apt-get install --yes playitslowly
