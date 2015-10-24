@@ -104,6 +104,14 @@ echo "Installing FireFox"
 	firefox downloads/pentadactyl-1.2pre.xpi
 echo "FireFox installed"
 
+
+cd ${HOME}/bin
+git clone https://github.com/Diaoul/subliminal.git
+cd subliminal
+sudo python setup.py install
+
+
+
 dpkg-divert --local --divert /usr/bin/ack --rename --add /usr/bin/ack-grep 
 cd ${HOME}
 git clone https://github.com/ryanoasis/nerd-fonts.git
