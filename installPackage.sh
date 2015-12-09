@@ -26,6 +26,7 @@ echo "Installing packages"
 	sudo apt-get install --yes solfege
 	sudo apt-get install --yes tuxguitar-alsa
 	sudo apt-get install --yes tuxguitar-jsa
+	sudo apt-get install --yes libkrb5-dev
 	sudo apt-get install --yes vlc
 	sudo apt-get install --yes git
 	sudo apt-get install --yes html2text
