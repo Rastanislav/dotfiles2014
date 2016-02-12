@@ -41,6 +41,7 @@ echo "Installing packages"
 	sudo apt-get install --yes ack-grep
 	sudo apt-get install --yes aircrack-ng
 	sudo apt-get install --yes gtkpod
+	sudo apt-get install --yes acpi
 	sudo apt-get install --yes pepperflashplugin-nonfree
 	sudo npm install gulp -g
 echo "Done installing packages"
