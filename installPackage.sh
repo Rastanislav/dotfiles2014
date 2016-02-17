@@ -7,6 +7,7 @@ echo "Installing packages"
 	sudo apt-get update
 	sudo apt-get install --yes oracle-java8-installer
 	sudo apt-get install --yes mercurial
+	sudo apt-get install --yes python3-setuptools
 	sudo apt-get install --yes python-pip
 	sudo apt-get install --yes zsh
 	sudo apt-get install --yes libtool
