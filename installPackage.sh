@@ -16,6 +16,8 @@ echo "Installing packages"
 	sudo apt-get install --yes php5 
 	sudo apt-get install --yes libapache2-mod-php5
 	sudo apt-get install --yes php5-mysql
+	sudo apt-get install --yes phpmyadmin 
+	sudo apt-get install --yes apache2-utils
 	pip3 install mps-youtube 
 	sudo apt-get install --yes zsh
 	sudo apt-get install --yes libtool
