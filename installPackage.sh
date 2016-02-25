@@ -11,6 +11,7 @@ echo "Installing packages"
 	sudo apt-get install --yes python-pip
 	sudo apt-get install --yes python3-pip
 	sudo apt-get install --yes yasm
+	sudo apt-get install --yes mysql-server
 	pip3 install mps-youtube 
 	sudo apt-get install --yes zsh
 	sudo apt-get install --yes libtool
