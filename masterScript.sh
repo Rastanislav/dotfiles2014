@@ -119,7 +119,7 @@ sh ${HOME}/nerd-fonts/install.sh
 
 cd ${HOME}
 git clone https://github.com/junegunn/fzf.git
-bash ${HOME}/fzf/install
+sudo bash ${HOME}/fzf/install
 
 gvfs-mime --set x-scheme-handler/magnet deluge.desktop
 
