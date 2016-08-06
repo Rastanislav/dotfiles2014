@@ -113,9 +113,9 @@ sudo python setup.py install
 
 
 dpkg-divert --local --divert /usr/bin/ack --rename --add /usr/bin/ack-grep 
-cd ${HOME}
-git clone https://github.com/ryanoasis/nerd-fonts.git
-sh ${HOME}/nerd-fonts/install.sh 
+#cd ${HOME}
+#git clone https://github.com/ryanoasis/nerd-fonts.git
+#sh ${HOME}/nerd-fonts/install.sh 
 
 # copy dotfiles before installing this
 cd ${HOME}
