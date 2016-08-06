@@ -117,6 +117,7 @@ cd ${HOME}
 git clone https://github.com/ryanoasis/nerd-fonts.git
 sh ${HOME}/nerd-fonts/install.sh 
 
+# copy dotfiles before installing this
 cd ${HOME}
 git clone https://github.com/junegunn/fzf.git
 sudo bash ${HOME}/fzf/install
