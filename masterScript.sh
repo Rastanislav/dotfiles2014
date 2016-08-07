@@ -39,29 +39,6 @@ echo "Installing Tmux"
 echo "Done installing Tmux"
 
 
-echo "Installing Vim"
-	cd ${HOME}/bin
-	hg clone https://vim.googlecode.com/hg/ vim
-	hg pull
-	hg update
-	cd vim/src
-	./configure \
-   	 --enable-perlinterp \
-   	 --enable-pythoninterp \
-   	 --enable-rubyinterp \
-     --enable-cscope \
-   	 --enable-gui=auto \
-   	 --enable-gtk2-check \
-   	 --enable-gnome-check \
-   	 --with-features=huge \
-   	 --enable-multibyte \
-   	 --with-x \
-   	 --with-compiledby="Rastanislav" \
-   	 --with-python-config-dir=/usr/lib/python2.7/config-x86_64-linux-gnu
-
-	sudo make
-	sudo make install 
-
 	git clone https://github.com/Shougo/neobundle.vim.git  ${HOME}/.vim/bundle/neobundle.vim
 	git clone https://github.com/saihoooooooo/glowshi-ft.vim.git ${HOME}/.vim/bundle/glowshi-ft.vim
 #        map <unique>; <plug>(glowshi-ft-repeat)
