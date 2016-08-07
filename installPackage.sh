@@ -58,6 +58,7 @@ echo "Installing packages"
 	sudo apt-get install --yes pepperflashplugin-nonfree
 	sudo npm install gulp -g
 	sudo apt-get install --yes chromium-browser
+	sudo apt-get install --yes tmux
 	sudo apt-get install --yes vim-gnome
 	
 echo "Done installing packages"
