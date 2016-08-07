@@ -26,26 +26,11 @@ echo "Installing ctags"
 	sudo make install 
 echo "Done installing ctags"
 
-
-echo "Installing Tmux"
-	cd ${HOME}/bin
-	wget http://downloads.sourceforge.net/tmux/tmux-1.9a.tar.gz
-	tar xzvf tmux-1.9a.tar.gz
-	rm tmux-1.9a.tar.gz
-	cd tmux-1.9a
-	./configure
-	sudo make
-	sudo make install 
-echo "Done installing Tmux"
-
-
 	git clone https://github.com/Shougo/neobundle.vim.git  ${HOME}/.vim/bundle/neobundle.vim
 	git clone https://github.com/saihoooooooo/glowshi-ft.vim.git ${HOME}/.vim/bundle/glowshi-ft.vim
 #        map <unique>; <plug>(glowshi-ft-repeat)
 #        unmap ;
 # comment those lines in /home/rastanislav/dotfiles/vim/bundle/glowshi-ft.vim/plugin/glowshi_ft.vim
-echo "Done installing Vim"
-
 
 
 echo "Installing prezto dotfiles"
