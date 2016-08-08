@@ -56,6 +56,7 @@ echo "Installing packages"
 	sudo apt-get install --yes gtkpod
 	sudo apt-get install --yes acpi
 	sudo apt-get install --yes pepperflashplugin-nonfree
+	sudo apt-get install --yes playonlinux
 	sudo npm install gulp -g
 	sudo apt-get install --yes chromium-browser
 	sudo apt-get install --yes tmux
