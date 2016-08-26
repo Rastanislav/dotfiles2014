@@ -1,0 +1,26 @@
+"3.14.0 (created: 2016/06/07 23:58:16)
+
+source! /home/rastanislav/.vimperatorrc.local
+
+" vim: set ft=vimperator:
+
+" Show pattern matches as you type
+set incsearch
+
+
+" Hilight previous search pattern matches
+set hlsearch
+
+" Override ignorecase if pattern has uppercase chars
+set smartcase
+
+
+noremap j 10j
+noremap k 10k
+
+
+
+noremap h gT
+noremap l gt
+
+set hintchars=asdfghjkl
