@@ -13,7 +13,6 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 " Refer to |:NeoBundle-examples|.
 " Note: You don't set neobundle setting in .gvimrc!
 
-call neobundle#end()
 
 " Required:
 filetype plugin indent on
@@ -59,6 +58,7 @@ NeoBundle "krisajenkins/vim-pipe"
 NeoBundle "tmhedberg/matchit"
 NeoBundle "valloric/MatchTagAlways"
 NeoBundleCheck
+call neobundle#end()
 
 
 
