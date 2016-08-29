@@ -57,8 +57,6 @@ echo "Installing packages"
 	sudo apt-get install --yes acpi
 	sudo apt-get install --yes pepperflashplugin-nonfree
 	sudo apt-get install --yes playonlinux
-	sudo apt-get install --yes php5-gd
-	sudo apt-get install --yes libssh2-php
 	sudo npm install gulp -g
 	sudo apt-get install --yes chromium-browser
 	sudo apt-get install --yes tmux
