@@ -20,6 +20,10 @@ echo "Installing packages"
 	sudo apt-get install --yes phpmyadmin 
 	sudo apt-get install --yes php-xml
 	sudo apt-get install --yes php5.6-xml
+	sudo apt-get install --yes php5.6-mcrypt
+	sudo apt-get install --yes php5.6-curl
+	sudo apt-get install --yes php5.6-gd
+	sudo apt-get install --yes php5.6-soap
 	sudo apt-get install --yes php7.0-mcrypt  
 	sudo apt-get install --yes php7.0-curl 
 	sudo apt-get install --yes php7.0-soap
