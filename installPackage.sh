@@ -21,6 +21,8 @@ echo "Installing packages"
 	sudo apt-get install --yes php-xml
 	sudo apt-get install --yes php5.6-xml
 	sudo apt-get install --yes php7.0-mcrypt  
+	sudo apt-get install --yes php7.0-curl 
+	sudo apt-get install --yes php7.0-soap
 	sudo apt-get install --yes apache2-utils
 	pip3 install mps-youtube 
 	sudo apt-get install --yes zsh
