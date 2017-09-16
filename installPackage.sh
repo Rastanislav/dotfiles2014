@@ -29,7 +29,9 @@ echo "Installing packages"
 	sudo apt-get install --yes php7.0-curl 
 	sudo apt-get install --yes php7.0-soap
 	sudo apt-get install --yes apache2-utils
-	pip3 install mps-youtube 
+	sudo pip3 install mps-youtube 
+	sudo pip install sqlitebiter
+	sudo apt-get install --yes midori
 	sudo apt-get install --yes zsh
 	sudo apt-get install --yes libtool
 	sudo apt-get install --yes automake
