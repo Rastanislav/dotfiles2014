@@ -74,5 +74,6 @@ echo "Installing packages"
 	sudo apt-get install --yes chromium-browser
 	sudo apt-get install --yes tmux
 	sudo apt-get install --yes vim-gnome
+	sudo apt-get install  --yes mysql-workbench
 	
 echo "Done installing packages"
