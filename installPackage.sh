@@ -38,6 +38,7 @@ echo "Installing packages"
 	sudo apt-get install --yes gimp
 	sudo apt-get install --yes playitslowly
 	sudo apt-get install --yes libevent-dev
+	sudo apt-get install --yes pritunl
 	sudo apt-get install --yes python-dev
 	sudo apt-get install --yes python3-dev
 	sudo apt-get install --yes ruby
