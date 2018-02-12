@@ -77,5 +77,6 @@ echo "Installing packages"
 	sudo apt-get install --yes vim-gnome
 	sudo apt-get install  --yes mysql-workbench
 	sudo apt-get install  --yes keepass2
+	sudo apt-get install  --yes filezilla
 	
 echo "Done installing packages"
