@@ -41,10 +41,9 @@ echo "Done installing prezto"
 
 
 echo "Installing Skype"
-	wget http://www.skype.com/go/getskype-linux-beta-ubuntu-64
-	sudo dpkg -i getskype-*
-	sudo apt-get -f --yes install
-	sudo apt-get install sni-qt sni-qt:i386
+wget https://repo.skype.com/latest/skypeforlinux-64.deb
+sudo dpkg -i skypeforlinux-64.deb
+rm skypeforlinux-64.deb
 echo "Done installing Skype"
 
 
