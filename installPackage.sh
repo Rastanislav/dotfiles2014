@@ -64,19 +64,20 @@ echo "Installing packages"
 	sudo apt-get install --yes mplayer
 	sudo apt-get install --yes deluge
 	sudo apt-get install --yes nodejs
-	sudo apt-get install --yes npm
+	
 	sudo apt-get install --yes ack-grep
 	sudo apt-get install --yes aircrack-ng
 	sudo apt-get install --yes gtkpod
 	sudo apt-get install --yes acpi
 	sudo apt-get install --yes pepperflashplugin-nonfree
 	sudo apt-get install --yes playonlinux
-	sudo npm install gulp -g
 	sudo apt-get install --yes chromium-browser
 	sudo apt-get install --yes tmux
 	sudo apt-get install --yes vim-gnome
 	sudo apt-get install  --yes mysql-workbench
 	sudo apt-get install  --yes keepass2
 	sudo apt-get install  --yes filezilla
+	curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+	sudo apt-get install --yes nodejs
 	
 echo "Done installing packages"
