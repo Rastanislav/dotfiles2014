@@ -5,6 +5,7 @@ echo "Installing packages"
 	sudo add-apt-repository ppa:deluge-team/ppa
 	sudo apt-add-repository ppa:webupd8team/java
 	sudo apt-add-repository ppa:jtaylor/keepass -y
+	sudo add-apt-repository ppa:gophers/archive
 	sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
 	sudo apt-get update
 	sudo apt-get install --yes oracle-java8-installer
@@ -64,7 +65,7 @@ echo "Installing packages"
 	sudo apt-get install --yes mplayer
 	sudo apt-get install --yes deluge
 	sudo apt-get install --yes nodejs
-	
+	sudo apt-get install --yes golang-1.9-go
 	sudo apt-get install --yes ack-grep
 	sudo apt-get install --yes aircrack-ng
 	sudo apt-get install --yes gtkpod
