@@ -46,6 +46,15 @@ sudo dpkg -i skypeforlinux-64.deb
 rm skypeforlinux-64.deb
 echo "Done installing Skype"
 
+echo "Installing Go"
+cd $HOME
+mkdir -p Work/Go
+curl -O https://dl.google.com/go/go1.9.4.linux-amd64.tar.gz
+tar -xvf go1.9.4.linux-amd64.tar.gz
+sudo mv go /usr/local/
+rm go1.9.4.linux-amd64.tar.gz
+echo "Done installing Skype"
+
 
 echo "Organizing launch pad"
 	gsettings set com.canonical.Unity.Launcher favorites "['application://firefox.desktop', 'application://skype.desktop', 'application://gnome-terminal.desktop', 'application://nautilus.desktop', 'application://deluge.desktop', 'application://vlc.desktop', 'application://libreoffice-writer.desktop', 'application://libreoffice-calc.desktop', 'application://libreoffice-impress.desktop', 'application://ubuntu-software-center.desktop', 'application://ubuntu-amazon-default.desktop', 'application://unity-control-center.desktop', 'unity://running-apps', 'unity://expo-icon', 'unity://devices']"
