@@ -79,5 +79,6 @@ echo "Installing packages"
 	sudo apt-get install  --yes filezilla
 	curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 	sudo apt-get install --yes nodejs
+	snap install slack --classic
 	
 echo "Done installing packages"
