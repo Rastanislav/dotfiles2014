@@ -1,6 +1,7 @@
 #!/bin/bash
 
 echo "Installing packages"
+	sudo add-apt-repository ppa:masterminds/glide && sudo apt-get update
 	sudo add-apt-repository ppa:videolan/stable-daily
 	sudo add-apt-repository ppa:deluge-team/ppa
 	sudo apt-add-repository ppa:webupd8team/java
@@ -8,6 +9,7 @@ echo "Installing packages"
 	sudo add-apt-repository ppa:gophers/archive
 	sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
 	sudo apt-get update
+	sudo apt-get install --yes glide
 	sudo apt-get install --yes oracle-java8-installer
 	sudo apt-get install --yes mercurial
 	sudo apt-get install --yes yakuake
