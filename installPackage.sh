@@ -82,6 +82,7 @@ echo "Installing packages"
 	sudo apt-get install  --yes filezilla
 	sudo apt-get install  --yes docker
 	sudo apt-get install  --yes docker-compose
+	sudo apt-get install  --yes npm
 	curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 	sudo apt-get install --yes nodejs
 	snap install slack --classic
