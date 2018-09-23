@@ -10,6 +10,7 @@ echo "Installing packages"
 	sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
 	sudo apt-get update
 	sudo apt-get install --yes glide
+	sudo apt install gnome-tweak-tool
 	sudo apt install php-xdebug
 	sudo apt-get install --yes composer
 	sudo apt-get install --yes oracle-java8-installer
