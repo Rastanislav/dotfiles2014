@@ -23,6 +23,7 @@ filetype plugin indent on
 "them.
 "
 NeoBundleLazy "junegunn/fzf"
+NeoBundle "will133/vim-dirdiff"
 NeoBundle "chrisbra/vim-diff-enhanced"
 NeoBundle "ryanoasis/vim-devicons"
 NeoBundle "saihoooooooo/glowshi-ft.vim"
@@ -606,7 +607,7 @@ map ; :
  vmap <Enter> <Plug>(EasyAlign)
 
 
-let g:glowshi_ft_no_default_key_mappings = s:true
+"let g:glowshi_ft_no_default_key_mappings = s:true
 map f <plug>(glowshi-ft-f)
 map F <plug>(glowshi-ft-F)
 map t <plug>(glowshi-ft-t)
