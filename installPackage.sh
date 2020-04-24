@@ -55,6 +55,7 @@ echo "Installing packages"
 	sudo apt-get install --yes python3-dev
 	sudo apt-get install --yes ruby
 	sudo apt-get install --yes lm-sensors
+	sudo apt-get install --yes sensors-applet 
 	sudo apt-get install --yes ruby-dev
 	sudo apt-get install --yes libx11-dev
 	sudo apt-get install --yes libxt-dev
