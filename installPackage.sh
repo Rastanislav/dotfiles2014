@@ -83,7 +83,6 @@ echo "Installing packages"
 	sudo apt-get install --yes acpi
 	sudo apt-get install --yes pepperflashplugin-nonfree
 	sudo apt-get install --yes playonlinux
-	sudo apt-get install --yes chromium-browser
 	sudo apt-get install --yes tmux
 	sudo apt-get install --yes vim-gnome
 	sudo apt-get install  --yes mysql-workbench
