@@ -15,6 +15,7 @@ echo "Installing packages"
 	sudo apt-get install --yes glide
 	sudo apt install gnome-tweak-tool
 	sudo apt install php-xdebug
+	sudo apt-get install --yes cmake
 	sudo apt-get install --yes composer
 	sudo apt-get install --yes oracle-java8-installer
 	sudo apt-get install --yes mercurial
