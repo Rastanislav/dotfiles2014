@@ -15,6 +15,17 @@ echo "Installing dotfiles"
 	./makesymlinks.sh
 echo "Done installing dotfiles"
 
+echo "Installing thinkfan"
+	cd ${HOME}/bin
+	wget https://codeload.github.com/vmatare/thinkfan/zip/master
+	extract thinkfan-master.zip
+	cd thinkfan-master
+	mkdir build && cd build
+	cmake -D CMAKE_BUILD_TYPE:STRING=Debug ..
+	make
+	sudo make install
+echo "Done installing thinkfan"
+
 echo "Installing ctags"
 	cd ${HOME}/bin
 	wget http://prdownloads.sourceforge.net/ctags/ctags-5.8.tar.gz
