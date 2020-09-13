@@ -97,3 +97,7 @@ sudo service apache2 restart
 # shit that doesn't work after install:
 #1)VIM: cant visually drag shit (S-UP/DOWN)
 #2)VIM: comment out lines for ";" in glowshift plugin
+
+
+sudo groupadd docker
+sudo gpasswd -a $USER docker
