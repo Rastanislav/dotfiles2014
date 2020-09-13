@@ -84,7 +84,7 @@ echo "Installing packages"
 	sudo apt-get install --yes pepperflashplugin-nonfree
 	sudo apt-get install --yes playonlinux
 	sudo apt-get install --yes tmux
-	sudo apt-get install --yes vim-gnome
+	sudo apt-get install --yes vim-gtk
 	sudo apt-get install  --yes mysql-workbench
 	sudo apt-get install  --yes keepass2
 	sudo apt-get install  --yes filezilla
