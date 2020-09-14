@@ -102,5 +102,7 @@ sudo apt-get install pritunl-client-electron
 	curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 	sudo apt-get install --yes nodejs
 	sudo apt-get install --yes yarn
+	sudo apt-get install --yes telegram-desktop
+
 	
 echo "Done installing packages"
