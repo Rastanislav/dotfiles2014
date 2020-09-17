@@ -103,6 +103,6 @@ sudo apt-get install pritunl-client-electron
 	sudo apt-get install --yes nodejs
 	sudo apt-get install --yes yarn
 	sudo apt-get install --yes telegram-desktop
-
+	sudo apt-get install --yes pavucontrol
 	
 echo "Done installing packages"
