@@ -105,5 +105,5 @@ sudo apt-get install pritunl-client-electron
 	sudo apt-get install --yes telegram-desktop
 	sudo apt-get install --yes pavucontrol
 	sudo apt-get install --yes postgresql
-	
+	sudo apt-get install --yes postgresql-client
 echo "Done installing packages"
