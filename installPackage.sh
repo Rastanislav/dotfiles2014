@@ -83,7 +83,7 @@ sudo apt-get install pritunl-client-electron
 	sudo apt-get install --yes mplayer
 	sudo apt-get install --yes deluge
 	sudo apt-get install --yes nodejs
-	sudo apt-get install --yes golang-1.9-go
+	sudo apt-get install --yes golang
 	sudo apt-get install --yes ack-grep
 	sudo apt-get install --yes aircrack-ng
 	sudo apt-get install --yes gtkpod
