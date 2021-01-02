@@ -106,4 +106,12 @@ sudo apt-get install pritunl-client-electron
 	sudo apt-get install --yes pavucontrol
 	sudo apt-get install --yes postgresql
 	sudo apt-get install --yes postgresql-client
+	wget -O- https://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc | sudo apt-key add -
+	echo "deb https://packages.erlang-solutions.com/ubuntu focal contrib" | sudo tee /etc/apt/sources.list.d/rabbitmq.list
+	sudo apt install --yes apt-transport-https
+	sudo apt install --yes erlang
+	wget -O- https://dl.bintray.com/rabbitmq/Keys/rabbitmq-release-signing-key.asc | sudo apt-key add -
+	wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | sudo apt-key add -
+	echo "deb https://dl.bintray.com/rabbitmq-erlang/debian focal erlang-22.x" | sudo tee /etc/apt/sources.list.d/rabbitmq.list
+	sudo apt install --yes rabbitmq-server
 echo "Done installing packages"
