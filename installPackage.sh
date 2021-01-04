@@ -16,14 +16,18 @@ sudo apt-get install pritunl-client-electron
 	sudo add-apt-repository ppa:gophers/archive
 	sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
 	sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
-	echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
 	
 	sudo apt-get update
 	sudo apt-get install --yes glide
-	sudo apt install gnome-tweak-tool
-	sudo apt install php-xdebug
+	sudo apt-get install --yes gnome-tweak-tool
+	sudo apt-get install --yes php-xdebug
+	sudo apt-get install --yes gnupg
+	wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
+	echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/4.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.4.list
+	sudo apt-get update
+	sudo apt-get install -y mongodb-org
 	sudo apt-get install --yes cmake
-	sudo apt-get install -y libyaml-cpp-dev 
+	sudo apt-get install --yes libyaml-cpp-dev 
 	sudo apt-get install --yes composer
 	sudo apt-get install --yes oracle-java8-installer
 	sudo apt-get install --yes mercurial
@@ -98,7 +102,6 @@ sudo apt-get install pritunl-client-electron
 	sudo apt-get install  --yes docker
 	sudo apt-get install  --yes docker-compose
 	sudo apt-get install  --yes npm
-	sudo apt-get install -y mongodb
 	curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 	sudo apt-get install --yes nodejs
 	sudo apt-get install --yes yarn
@@ -114,4 +117,5 @@ sudo apt-get install pritunl-client-electron
 	wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | sudo apt-key add -
 	echo "deb https://dl.bintray.com/rabbitmq-erlang/debian focal erlang-22.x" | sudo tee /etc/apt/sources.list.d/rabbitmq.list
 	sudo apt install --yes rabbitmq-server
+	sudo systemctl start mongod
 echo "Done installing packages"
