@@ -199,7 +199,7 @@ alias zshrc='vim ~/.zshrc'
 #alias reload="source ~/.bashrc"
 #FIGNORE=".o:.swo:.swp"
 
-export DOCKER_HOST=127.0.0.1
+export DOCKER_HOST=unix:///var/run/docker.sock
 
 
 
