@@ -51,12 +51,6 @@ echo "Installing prezto dotfiles"
 echo "Done installing prezto"
 
 
-echo "Installing Skype"
-wget https://repo.skype.com/latest/skypeforlinux-64.deb
-sudo dpkg -i skypeforlinux-64.deb
-rm skypeforlinux-64.deb
-echo "Done installing Skype"
-
 echo "Installing Go"
 cd $HOME
 mkdir -p Work/Go
