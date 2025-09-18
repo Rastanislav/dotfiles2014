@@ -281,7 +281,7 @@ alias mp='mplayer'
 alias v='f -e vim' # quick opening files with vim
 alias m='f -e mplayer' # quick opening files with mplayer
 alias o='a -e xdg-open' # quick opening files with xdg-open
-
+export PATH="$HOME/.local/bin:$PATH"
 
 bindkey '5D' emacs-backward-word
 bindkey '5C' emacs-forward-word
