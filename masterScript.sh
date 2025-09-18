@@ -37,6 +37,15 @@ echo "Installing ctags"
 	sudo make install 
 echo "Done installing ctags"
 
+echo "Installing cusor"
+	curl https://cursor.com/install -fsS | bash
+	cursor-agent --version
+
+
+echo "Done installing cursor"
+
+
+
 	git clone https://github.com/Shougo/neobundle.vim.git  ${HOME}/.vim/bundle/neobundle.vim
 	git clone https://github.com/saihoooooooo/glowshi-ft.vim.git ${HOME}/.vim/bundle/glowshi-ft.vim
 #        map <unique>; <plug>(glowshi-ft-repeat)
