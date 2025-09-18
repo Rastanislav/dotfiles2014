@@ -109,6 +109,7 @@ sudo apt-get install pritunl-client-electron
 	sudo apt-get install --yes pavucontrol
 	sudo apt-get install --yes postgresql
 	sudo apt-get install --yes postgresql-client
+ 	sudo apt-get install --yes libfuse2
 	wget -O- https://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc | sudo apt-key add -
 	echo "deb https://packages.erlang-solutions.com/ubuntu focal contrib" | sudo tee /etc/apt/sources.list.d/rabbitmq.list
 	sudo apt install --yes apt-transport-https
