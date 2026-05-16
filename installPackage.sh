@@ -1,151 +1,253 @@
-#!/bin/bash
+#!/usr/bin/env bash
+#
+# Ubuntu 26.04 LTS (Resolute) — dev / desktop bootstrap
+# Modernized from a focal-era install script.
+#
+# Usage:
+#   chmod +x ubuntu-26-dev-setup.sh
+#   ./ubuntu-26-dev-setup.sh
+#
+# Optional: edit ENABLE_* flags below before running.
 
-echo "Installing packages"
-sudo tee /etc/apt/sources.list.d/pritunl.list << EOF
-deb https://repo.pritunl.com/stable/apt focal main
+set -euo pipefail
+
+export DEBIAN_FRONTEND=noninteractive
+
+# --- toggles (set to 0 to skip a section) ---
+ENABLE_PRITUNL_CLIENT=1
+ENABLE_PRITUNL_SERVER=0
+ENABLE_DOCKER=1
+ENABLE_MONGODB=1
+ENABLE_NODEJS=1          # Node.js 22 LTS via NodeSource
+ENABLE_RABBITMQ=1
+ENABLE_LAMP=1            # Apache + PHP 8 + MySQL
+ENABLE_PHPMYADMIN=0      # interactive; enable if you want it
+ENABLE_MINIKUBE=1
+ENABLE_DESKTOP_EXTRAS=1
+
+# Vendor suites: use noble (24.04) until vendors ship resolute
+VENDOR_SUITE="${VENDOR_SUITE:-noble}"
+ARCH="$(dpkg --print-architecture)"
+. /etc/os-release
+
+if [[ "${VERSION_CODENAME:-}" != "resolute" ]]; then
+  echo "Warning: expected Ubuntu 26.04 (resolute); detected: ${VERSION_CODENAME:-unknown}"
+  read -r -p "Continue anyway? [y/N] " ans
+  [[ "${ans,,}" == "y" ]] || exit 1
+fi
+
+if [[ "$(id -u)" -eq 0 ]]; then
+  echo "Run as a normal user with sudo, not as root."
+  exit 1
+fi
+
+log() { printf '\n\033[1;36m==> %s\033[0m\n' "$*"; }
+run() { log "$*"; sudo "$@"; }
+
+require_cmd() {
+  command -v "$1" >/dev/null 2>&1 || { echo "Missing command: $1"; exit 1; }
+}
+
+install_prereqs() {
+  log "Base packages"
+  run apt-get update
+  run apt-get install -y \
+    ca-certificates curl wget gnupg apt-transport-https software-properties-common \
+    build-essential pkg-config
+}
+
+write_keyring() {
+  # write_keyring <url> <keyring-path>
+  local url="$1" keyring="$2"
+  curl -fsSL "$url" | gpg --dearmor | sudo tee "$keyring" >/dev/null
+  sudo chmod a+r "$keyring"
+}
+
+setup_pritunl_client() {
+  [[ "$ENABLE_PRITUNL_CLIENT" -eq 1 ]] || return 0
+  log "Pritunl client (suite: ${VENDOR_SUITE})"
+  write_keyring \
+    "https://raw.githubusercontent.com/pritunl/pgp/master/pritunl_repo_pub.asc" \
+    /usr/share/keyrings/pritunl-archive-keyring.gpg
+  echo "deb [signed-by=/usr/share/keyrings/pritunl-archive-keyring.gpg] https://repo.pritunl.com/stable/apt ${VENDOR_SUITE} main" \
+    | sudo tee /etc/apt/sources.list.d/pritunl.list >/dev/null
+  run apt-get update
+  run apt-get install -y pritunl-client-electron
+}
+
+setup_pritunl_server() {
+  [[ "$ENABLE_PRITUNL_SERVER" -eq 1 ]] || return 0
+  log "Pritunl VPN server"
+  run apt-get install -y pritunl
+}
+
+setup_docker() {
+  [[ "$ENABLE_DOCKER" -eq 1 ]] || return 0
+  log "Docker CE"
+  sudo install -m 0755 -d /etc/apt/keyrings
+  write_keyring \
+    "https://download.docker.com/linux/ubuntu/gpg" \
+    /etc/apt/keyrings/docker.asc
+  echo "deb [arch=${ARCH} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu ${VERSION_CODENAME} stable" \
+    | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
+  run apt-get update
+  run apt-get install -y \
+    docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+  sudo systemctl enable --now docker
+  if ! groups "$USER" | grep -q '\bdocker\b'; then
+    sudo usermod -aG docker "$USER"
+    echo "Added $USER to group docker — log out and back in before using docker without sudo."
+  fi
+}
+
+setup_mongodb() {
+  [[ "$ENABLE_MONGODB" -eq 1 ]] || return 0
+  log "MongoDB 8.0 (vendor suite: ${VENDOR_SUITE})"
+  write_keyring \
+    "https://pgp.mongodb.com/server-8.0.asc" \
+    /usr/share/keyrings/mongodb-server-8.0.gpg
+  echo "deb [arch=${ARCH} signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg] https://repo.mongodb.org/apt/ubuntu ${VENDOR_SUITE}/mongodb-org/8.0 multiverse" \
+    | sudo tee /etc/apt/sources.list.d/mongodb-org-8.0.list >/dev/null
+  run apt-get update
+  run apt-get install -y mongodb-org
+  sudo systemctl enable --now mongod
+}
+
+setup_nodejs() {
+  [[ "$ENABLE_NODEJS" -eq 1 ]] || return 0
+  log "Node.js 22 LTS (NodeSource)"
+  require_cmd curl
+  curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+  run apt-get install -y nodejs
+  # Yarn via Corepack (ships with Node 16+)
+  if command -v corepack >/dev/null 2>&1; then
+    sudo corepack enable || true
+    corepack prepare yarn@stable --activate || true
+  fi
+}
+
+setup_rabbitmq() {
+  [[ "$ENABLE_RABBITMQ" -eq 1 ]] || return 0
+  log "RabbitMQ (deb.rabbitmq.com, suite: ${VENDOR_SUITE})"
+  write_keyring \
+    "https://keys.openpgp.org/vks/v1/by-fingerprint/0A9AF2115F4687BD29803A206B73A36E6026DFCA" \
+    /usr/share/keyrings/com.rabbitmq.team.gpg
+  sudo tee /etc/apt/sources.list.d/rabbitmq.list >/dev/null <<EOF
+deb [arch=${ARCH} signed-by=/usr/share/keyrings/com.rabbitmq.team.gpg] https://deb1.rabbitmq.com/rabbitmq-erlang/ubuntu/${VENDOR_SUITE} ${VENDOR_SUITE} main
+deb [arch=${ARCH} signed-by=/usr/share/keyrings/com.rabbitmq.team.gpg] https://deb2.rabbitmq.com/rabbitmq-erlang/ubuntu/${VENDOR_SUITE} ${VENDOR_SUITE} main
+deb [arch=${ARCH} signed-by=/usr/share/keyrings/com.rabbitmq.team.gpg] https://deb1.rabbitmq.com/rabbitmq-server/ubuntu/${VENDOR_SUITE} ${VENDOR_SUITE} main
+deb [arch=${ARCH} signed-by=/usr/share/keyrings/com.rabbitmq.team.gpg] https://deb2.rabbitmq.com/rabbitmq-server/ubuntu/${VENDOR_SUITE} ${VENDOR_SUITE} main
 EOF
+  run apt-get update
+  run apt-get install -y erlang-base erlang-asn1 erlang-crypto erlang-eldap erlang-ftp \
+    erlang-inets erlang-mnesia erlang-os-mon erlang-parsetools erlang-public-key \
+    erlang-runtime-tools erlang-snmp erlang-ssl erlang-syntax-tools erlang-tftp \
+    erlang-tools erlang-xmerl
+  run apt-get install -y rabbitmq-server
+  sudo systemctl enable --now rabbitmq-server
+}
 
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com --recv 7568D9BB55FF9E5287D586017AE645C0CF8E292A
-sudo apt-get update
-sudo apt-get install pritunl-client-electron
-	sudo add-apt-repository ppa:masterminds/glide && sudo apt-get update
-	sudo add-apt-repository ppa:videolan/stable-daily
-	sudo add-apt-repository ppa:deluge-team/ppa
-	sudo apt-add-repository ppa:webupd8team/java
-	sudo apt-add-repository ppa:jtaylor/keepass -y
-	sudo add-apt-repository ppa:gophers/archive
-	sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
-	sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
-	
-	sudo apt-get update
-	sudo apt-get install --yes glide
-	sudo apt-get install --yes gnome-tweak-tool
-	sudo apt-get install --yes php-xdebug
-	sudo apt-get install --yes gnupg
-	wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
-	echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/4.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.4.list
-	sudo apt-get update
-	sudo apt-get install -y mongodb-org
-	sudo apt-get install --yes cmake
-	sudo apt-get install --yes libyaml-cpp-dev 
-	sudo apt-get install --yes composer
-	sudo apt-get install --yes oracle-java8-installer
-	sudo apt-get install --yes mercurial
-	sudo apt-get install --yes yakuake
-	sudo apt-get install --yes python3-setuptools
-	sudo apt-get install --yes python-pip
-	sudo apt-get install --yes python3-pip
-	sudo apt-get install --yes yasm
-	sudo apt-get install --yes apache2
-	sudo apt-get install --yes mysql-server
-	sudo apt-get install --yes php5 
-	sudo apt-get install --yes libapache2-mod-php5
-	sudo apt-get install --yes php5-mysql
-	sudo apt-get install --yes phpmyadmin 
-	sudo apt-get install --yes php-xml
-	sudo apt-get install --yes php5.6-xml
-	sudo apt-get install --yes php5.6-mcrypt
-	sudo apt-get install --yes php5.6-curl
-	sudo apt-get install --yes php5.6-gd
-	sudo apt-get install --yes php5.6-soap
-	sudo apt-get install --yes php7.0-mcrypt  
-	sudo apt-get install --yes php7.0-curl 
-	sudo apt-get install --yes php7.0-soap
-	sudo apt-get install --yes apache2-utils
-	sudo pip3 install mps-youtube 
-	sudo pip install sqlitebiter
-	sudo apt-get install --yes midori
-	sudo apt-get install --yes zsh
-	sudo apt-get install --yes libtool
-	sudo apt-get install --yes automake
-	sudo apt-get install --yes gimp
-	sudo apt-get install --yes playitslowly
-	sudo apt-get install --yes libevent-dev
-	sudo apt-get install --yes pritunl
-	sudo apt-get install --yes python-dev
-	sudo apt-get install --yes python3-dev
-	sudo apt-get install --yes ruby
-	sudo apt-get install --yes lm-sensors
-	sudo apt-get install --yes sensors-applet 
-	sudo apt-get install --yes ruby-dev
-	sudo apt-get install --yes libx11-dev
-	sudo apt-get install --yes libxt-dev
-	sudo apt-get install --yes libgtk2.0-dev
-	sudo apt-get install --yes ncurses-dev
-	sudo apt-get install --yes wireshark
-	sudo apt-get install --yes solfege
-	sudo apt-get install --yes tuxguitar-alsa
-	sudo apt-get install --yes tuxguitar-jsa
-	sudo apt-get install --yes libkrb5-dev
-	sudo apt-get install --yes vlc
-	sudo apt-get install --yes git
-	sudo apt-get install --yes html2text
-	sudo apt-get install --yes compizconfig-settings-manager
-	sudo apt-get install --yes compiz-plugins
-	sudo apt-get install --yes xdotool
-	sudo apt-get install --yes flashplugin-installer
-	sudo apt-get install --yes mplayer
-	sudo apt-get install --yes deluge
-	sudo apt-get install --yes nodejs
-	sudo apt-get install --yes golang
-	sudo apt-get install --yes ack-grep
-	sudo apt-get install --yes aircrack-ng
-	sudo apt-get install --yes gtkpod
-	sudo apt-get install --yes acpi
-	sudo apt-get install --yes pepperflashplugin-nonfree
-	sudo apt-get install --yes playonlinux
-	sudo apt-get install --yes tmux
-	sudo apt-get install --yes vim-gtk
-	sudo apt-get install  --yes mysql-workbench
-	sudo apt-get install  --yes keepass2
-	sudo apt-get install  --yes filezilla
-	sudo apt-get install  --yes docker
-	sudo apt-get install  --yes docker-compose
-	sudo apt-get install  --yes npm
-	curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-	sudo apt-get install --yes nodejs
-	sudo apt-get install --yes yarn
-	sudo apt-get install --yes telegram-desktop
-	sudo apt-get install --yes pavucontrol
-	sudo apt-get install --yes postgresql
-	sudo apt-get install --yes postgresql-client
- 	sudo apt-get install --yes libfuse2
-	wget -O- https://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc | sudo apt-key add -
-	echo "deb https://packages.erlang-solutions.com/ubuntu focal contrib" | sudo tee /etc/apt/sources.list.d/rabbitmq.list
-	sudo apt install --yes apt-transport-https
-	sudo apt install --yes erlang
-	wget -O- https://dl.bintray.com/rabbitmq/Keys/rabbitmq-release-signing-key.asc | sudo apt-key add -
-	wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | sudo apt-key add -
-	echo "deb https://dl.bintray.com/rabbitmq-erlang/debian focal erlang-22.x" | sudo tee /etc/apt/sources.list.d/rabbitmq.list
-	sudo apt install --yes rabbitmq-server
-	sudo systemctl start mongod
-	sudo tee /etc/apt/sources.list.d/pritunl.list << EOF
-deb https://repo.pritunl.com/stable/apt jammy main
-EOF
+setup_lamp() {
+  [[ "$ENABLE_LAMP" -eq 1 ]] || return 0
+  log "Apache + PHP 8 + MySQL"
+  run apt-get install -y \
+    apache2 libapache2-mod-php php php-cli php-common \
+    php-mysql php-xml php-curl php-gd php-soap php-mbstring php-zip \
+    php-xdebug mysql-server apache2-utils
+  if [[ "$ENABLE_PHPMYADMIN" -eq 1 ]]; then
+    echo "phpmyadmin phpmyadmin/dbconfig-install boolean true" | sudo debconf-set-selections
+    echo "phpmyadmin phpmyadmin/app-password-confirm password phpmyadmin" | sudo debconf-set-selections
+    echo "phpmyadmin phpmyadmin/mysql/admin-pass password phpmyadmin" | sudo debconf-set-selections
+    echo "phpmyadmin phpmyadmin/mysql/app-pass password phpmyadmin" | sudo debconf-set-selections
+    echo "phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2" | sudo debconf-set-selections
+    run apt-get install -y phpmyadmin
+  fi
+}
 
-minikube delete && \ 
-sudo rm -rf /usr/local/bin/minikube && \ 
-sudo curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && \ 
-sudo chmod +x minikube && \ 
-sudo cp minikube /usr/local/bin/ && \ 
-sudo rm minikube && \  
-minikube start &&\
+install_dev_packages() {
+  log "Development & CLI tools"
+  run apt-get install -y \
+    git mercurial cmake libyaml-cpp-dev composer \
+    openjdk-21-jdk \
+    python3 python3-pip python3-dev python3-venv python3-setuptools \
+    golang-go ruby ruby-dev \
+    postgresql postgresql-client \
+    libfuse2 libevent-dev libkrb5-dev libssl-dev \
+    libx11-dev libxt-dev libncurses-dev \
+    automake libtool yasm \
+    vim-gtk3 tmux zsh \
+    ack ripgrep html2text xdotool \
+    wireshark-common tshark \
+    aircrack-ng lm-sensors sensors-applet acpi \
+    npm
+}
 
-# Enabling addons: ingress, dashboard
-minikube addons enable ingress && \
-minikube addons enable dashboard && \
-minikube addons enable metrics-server && \
-# Showing enabled addons
-echo '\n\n\033[4;33m Enabled Addons \033[0m' && \
-minikube addons list | grep STATUS && minikube addons list | grep enabled && \
+install_desktop_packages() {
+  [[ "$ENABLE_DESKTOP_EXTRAS" -eq 1 ]] || return 0
+  log "Desktop applications"
+  # Allow wireshark capture without manual group setup (optional)
+  echo "wireshark-common wireshark-common/install-setuid boolean true" | sudo debconf-set-selections
+  run apt-get install -y \
+    gnome-tweaks yakuake \
+    vlc deluge mplayer gimp \
+    keepass2 filezilla telegram-desktop pavucontrol \
+    gnupg
+}
 
-# Showing current status of Minikube
-echo '\n\n\033[4;33m Current status of Minikube \033[0m' && minikube status
+install_python_tools() {
+  log "Python pip tools"
+  pip3 install --user --upgrade pip
+  pip3 install --user mps-youtube sqlitebiter || true
+}
 
+setup_minikube() {
+  [[ "$ENABLE_MINIKUBE" -eq 1 ]] || return 0
+  if [[ "$ENABLE_DOCKER" -ne 1 ]]; then
+    echo "Minikube needs Docker (ENABLE_DOCKER=1)."
+    return 1
+  fi
+  log "Minikube"
+  if command -v minikube >/dev/null 2>&1; then
+    minikube delete || true
+  fi
+  curl -fsSL https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \
+    -o /tmp/minikube
+  chmod +x /tmp/minikube
+  sudo install -m 0755 /tmp/minikube /usr/local/bin/minikube
+  rm -f /tmp/minikube
 
+  # Use docker driver; may fail until user re-logins for docker group
+  if groups "$USER" | grep -q '\bdocker\b'; then
+    minikube start --driver=docker
+    minikube addons enable ingress
+    minikube addons enable metrics-server
+    # dashboard is optional and has security implications
+    # minikube addons enable dashboard
+    printf '\n\033[4;33mEnabled addons\033[0m\n'
+    minikube addons list | grep -E 'STATUS|enabled' || true
+    printf '\n\033[4;33mMinikube status\033[0m\n'
+    minikube status
+  else
+    echo "Skip minikube start: re-login after docker group membership, then run:"
+    echo "  minikube start --driver=docker"
+  fi
+}
 
-sudo apt --assume-yes install gnupg
-gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 7568D9BB55FF9E5287D586017AE645C0CF8E292A
-gpg --armor --export 7568D9BB55FF9E5287D586017AE645C0CF8E292A | sudo tee /etc/apt/trusted.gpg.d/pritunl.asc
-sudo apt update
-echo "Done installing packages"
+main() {
+  install_prereqs
+  setup_pritunl_client
+  setup_docker
+  setup_mongodb
+  setup_nodejs
+  setup_rabbitmq
+  run apt-get update
+  install_dev_packages
+  setup_lamp
+  install_desktop_packages
+  setup_pritunl_server
+  install_python_tools
+  setup_minikube
+  log "Done. Review any warnings above; reboot or re-login if added to group docker."
+}
+
+main "$@"
