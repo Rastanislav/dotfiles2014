@@ -1,6 +1,22 @@
-# ~/.zshrc — sourced after Prezto (see .zpreztorc)
+# ~/.zshrc — Prezto modules in .zpreztorc; customizations below
+if [[ -z "${ZSH_VERSION:-}" ]]; then
+  echo 'ERROR: ~/.zshrc is for zsh only. Run: exec zsh   (not: source ~/.zshrc from bash)' >&2
+  return 2>/dev/null || exit 1
+fi
 
-# Directory jumping: prefer zoxide, fall back to fasd
+# Source Prezto first (compinit + cd completion must run before fasd/zoxide)
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
+
+# Complete `cd w` → ~/WorkOld from any directory (not only cwd children)
+export CDPATH="${HOME}${CDPATH:+:${CDPATH}}"
+cdpath=(${=CDPATH//:/ })
+
+unsetopt correct
+setopt AUTO_CD NO_HUP NO_BEEP NO_CASE_GLOB EXTENDED_GLOB
+
+# Directory jumping: prefer zoxide, fall back to fasd (`z wo` / `zz`, not tab on `cd`)
 if command -v zoxide >/dev/null 2>&1; then
   eval "$(zoxide init zsh)"
   alias j='zoxide query -i'
@@ -15,14 +31,6 @@ elif command -v fasd >/dev/null 2>&1; then
   alias z='fasd_cd -d'
   alias zz='fasd_cd -d -i'
 fi
-
-# Source Prezto
-if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
-fi
-
-unsetopt correct
-setopt AUTO_CD NO_HUP NO_BEEP NO_CASE_GLOB EXTENDED_GLOB
 setopt APPEND_HISTORY INC_APPEND_HISTORY
 HISTFILE=~/.zsh_history
 SAVEHIST=10000

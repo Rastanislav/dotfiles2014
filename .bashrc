@@ -113,7 +113,9 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# Optional: launch zsh from bash (disabled — set login shell to zsh instead)
-# exec zsh
+# If a pane still starts bash (old tmux session, ssh, etc.), hand off to zsh
+if [[ -z "${ZSH_VERSION:-}" ]] && command -v zsh >/dev/null 2>&1; then
+  exec zsh -l
+fi
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
