@@ -76,6 +76,12 @@ alias mp='mplayer'
 alias o='xdg-open'
 alias grepa='grep -irns'
 
+# ~/bin helpers (source scripts — must run in zsh, not bash subshell)
+ff() { source "${HOME}/bin/newf" "$@"; }
+gg() { source "${HOME}/bin/newg" "$@"; }
+lf() { source "${HOME}/bin/newl" "$@"; }
+alias lff='bash "${HOME}/bin/llff"'
+
 # fasd-style openers (when fasd is available)
 if command -v fasd >/dev/null 2>&1; then
   alias v='f -e vim'
@@ -106,5 +112,11 @@ alias -s txt=vim h=vim cc=vim pm=vim
 # Tools
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 
-# Do not auto-start tmux on every shell (use prezto tmux module or run: tmux)
 export TERM="${TERM:-xterm-256color}"
+
+# Fallback if Prezto did not exec tmux (IDE terminals, etc.). Set TMUX_AUTO_START=1 to force.
+if [[ -z "${TMUX:-}" && -z "${VIMRUNTIME:-}" && -z "${NVIM:-}" ]]; then
+  if [[ -n "${TMUX_AUTO_START:-}" ]] || [[ "${TERM_PROGRAM:-}" != vscode && -z "${VSCODE_INJECTION:-}" ]]; then
+    command -v tmux >/dev/null && exec tmux -f "${HOME}/.tmux.conf" new -As main
+  fi
+fi

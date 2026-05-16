@@ -206,8 +206,10 @@ map <F6> :set spell! <CR><Esc>
 map <F7> :Files<CR>
 map <F8> :set hlsearch! <CR><Esc>
 imap <F8> <Esc> :set hlsearch! <CR><Esc>a<Left>
-" F9: reserved (AutoComplPop removed — use built-in completion or coc/lsp)
-" map <F9> ...
+" F9: tmux vi copy-mode when running inside tmux (shell panes use tmux F9 directly)
+if exists('$TMUX') && len($TMUX)
+  nnoremap <silent> <F9> :call system('tmux copy-mode -t ' . shellescape($TMUX_PANE))<CR>
+endif
 
 map <F10> gg<CR><C-w><C-w>gg<CR>:set scrollbind<CR>:diffthis<CR><C-w><C-w>:set scrollbind<CR>:diffthis<CR>
 
