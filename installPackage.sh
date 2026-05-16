@@ -21,6 +21,7 @@ ENABLE_LAMP=1
 ENABLE_PHPMYADMIN=0
 ENABLE_MINIKUBE=1
 ENABLE_DESKTOP_EXTRAS=1
+ENABLE_CHROME=1           # google-chrome-stable (not chromium)
 
 VENDOR_SUITE="${VENDOR_SUITE:-noble}"
 ARCH="$(dpkg --print-architecture)"
@@ -209,6 +210,26 @@ install_dev_packages() {
   run apt-get install -y composer
 }
 
+setup_google_chrome() {
+  [[ "${ENABLE_CHROME:-0}" -eq 1 ]] || return 0
+  if command -v google-chrome-stable >/dev/null 2>&1; then
+    log "Google Chrome already installed"
+    return 0
+  fi
+  if [[ "$ARCH" != "amd64" ]]; then
+    echo "Google Chrome apt repo is amd64-only; skipping on ${ARCH}"
+    return 0
+  fi
+  log "Google Chrome (stable, not Chromium)"
+  sudo_if_needed install -m 0755 -d /etc/apt/keyrings
+  write_keyring https://dl.google.com/linux/linux_signing_key.pub \
+    /etc/apt/keyrings/google-chrome.gpg
+  echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/google-chrome.gpg] https://dl.google.com/linux/chrome/deb/ stable main" \
+    | sudo_if_needed tee /etc/apt/sources.list.d/google-chrome.list >/dev/null
+  run apt-get update
+  run apt-get install -y google-chrome-stable
+}
+
 install_desktop_packages() {
   [[ "$ENABLE_DESKTOP_EXTRAS" -eq 1 ]] || return 0
   log "Desktop applications"
@@ -224,6 +245,7 @@ install_desktop_packages() {
     sudo_if_needed systemctl enable --now snapd.socket
   fi
   sudo_if_needed snap install telegram-desktop
+  setup_google_chrome
 }
 
 install_python_tools() {
