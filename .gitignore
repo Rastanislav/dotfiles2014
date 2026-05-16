@@ -1,1 +1,6 @@
-vim/
+vim/plugged/
+vim/undo/
+*.swp
+*.swo
+*~
+.DS_Store

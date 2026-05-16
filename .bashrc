@@ -112,6 +112,8 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-zsh
+
+# Optional: launch zsh from bash (disabled — set login shell to zsh instead)
+# exec zsh
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash

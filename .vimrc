@@ -1,64 +1,54 @@
-  	set nocompatible               " Be iMproved
+set nocompatible
 
-  	set runtimepath+=~/.vim/bundle/neobundle.vim/
-
-" Required:
-call neobundle#begin(expand('~/.vim/bundle/'))
-
-" Let NeoBundle manage NeoBundle
-" Required:
-NeoBundleFetch 'Shougo/neobundle.vim'
-
-" My Bundles here:
-" Refer to |:NeoBundle-examples|.
-" Note: You don't set neobundle setting in .gvimrc!
-
-
-" Required:
+" Plugin manager: vim-plug (~/.vim/autoload/plug.vim from masterScript.sh)
+" Run :PlugInstall after first setup
 filetype plugin indent on
 
-" If there are uninstalled bundles found on
-"startup,
-" this will conveniently prompt you to install
-"them.
-"
-NeoBundleLazy "junegunn/fzf"
-NeoBundle "will133/vim-dirdiff"
-NeoBundle "chrisbra/vim-diff-enhanced"
-NeoBundle "ryanoasis/vim-devicons"
-NeoBundle "saihoooooooo/glowshi-ft.vim"
-NeoBundle "oblitum/rainbow"
-NeoBundle "tpope/vim-surround"
-NeoBundle "scrooloose/nerdtree"
-NeoBundle "yegappan/mru"
-NeoBundle "majutsushi/tagbar"
-NeoBundle "tpope/vim-fugitive"
-NeoBundle "junegunn/vim-easy-align"
-NeoBundle "Lokaltog/powerline"
-NeoBundle "kshenoy/vim-signature"
-NeoBundle 'mileszs/ack.vim'
-NeoBundle "godlygeek/tabular"
-NeoBundle "vim-scripts/Mark--Karkat"
-NeoBundle "bling/vim-airline"
-NeoBundle "benmills/vimux"
-NeoBundle "MarcWeber/vim-addon-mw-utils"
-NeoBundle "tomtom/tlib_vim"
-NeoBundle "garbas/vim-snipmate"
-NeoBundle "honza/vim-snippets"
-NeoBundle "Townk/vim-autoclose"
-NeoBundle "junegunn/goyo.vim"
-NeoBundle "mattn/gist-vim"
-NeoBundle "mattn/webapi-vim"
-NeoBundle "t9md/vim-quickhl"
-NeoBundle "scrooloose/nerdcommenter"
-NeoBundle "christoomey/vim-tmux-navigator"
-NeoBundle "vim-scripts/ccase.vim"
-NeoBundle "mhinz/vim-startify"
-NeoBundle "krisajenkins/vim-pipe"
-NeoBundle "tmhedberg/matchit"
-NeoBundle "valloric/MatchTagAlways"
-NeoBundleCheck
-call neobundle#end()
+if filereadable(expand('~/.vim/autoload/plug.vim'))
+  call plug#begin(expand('~/.vim/plugged'))
+
+  Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+  Plug 'will133/vim-dirdiff'
+  Plug 'chrisbra/vim-diff-enhanced'
+  Plug 'ryanoasis/vim-devicons'
+  Plug 'saihoooooooo/glowshi-ft.vim'
+  Plug 'oblitum/rainbow'
+  Plug 'tpope/vim-surround'
+  Plug 'preservim/nerdtree'
+  Plug 'yegappan/mru'
+  Plug 'preservim/tagbar'
+  Plug 'tpope/vim-fugitive'
+  Plug 'junegunn/vim-easy-align'
+  Plug 'kshenoy/vim-signature'
+  Plug 'mileszs/ack.vim'
+  Plug 'godlygeek/tabular'
+  Plug 'vim-scripts/Mark--Karkat'
+  Plug 'vim-airline/vim-airline'
+  Plug 'benmills/vimux'
+  Plug 'MarcWeber/vim-addon-mw-utils'
+  Plug 'tomtom/tlib_vim'
+  Plug 'garbas/vim-snipmate'
+  Plug 'honza/vim-snippets'
+  Plug 'Townk/vim-autoclose'
+  Plug 'junegunn/goyo.vim'
+  Plug 'mattn/gist-vim'
+  Plug 'mattn/webapi-vim'
+  Plug 't9md/vim-quickhl'
+  Plug 'preservim/nerdcommenter'
+  Plug 'christoomey/vim-tmux-navigator'
+  Plug 'vim-scripts/ccase.vim'
+  Plug 'mhinz/vim-startify'
+  Plug 'krisajenkins/vim-pipe'
+  Plug 'tmhedberg/matchit'
+  Plug 'valloric/MatchTagAlways'
+
+  call plug#end()
+endif
+
+" Prefer ripgrep for :Ack if available
+if executable('rg')
+  let g:ackprg = 'rg --vimgrep --no-heading'
+endif
 
 
 
@@ -87,14 +77,6 @@ nnoremap # mq#
 " Case insensitive search
 set ic
 
-
-
-" PATHOGEN
-"
-"execute pathogen#infect()
-""generate helptags for everything in Ã¢â‚¬ËœruntimepathÃ¢â‚¬â„¢
-"call pathogen#helptags()
-"filetype plugin indent on
 
 
 " sets how many lines of history VIM has to remember
@@ -161,9 +143,6 @@ map <leader>tp :tabprevious<cr>
 map <leader>tn :tabnext<cr>
 map <leader>tm :tabmove
 
-nnoremap <C-Left>b 
-nnoremap <C-Right>w 
-
 " Switch CWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
@@ -186,30 +165,12 @@ set viminfo^=%
     set clipboard+=unnamedplus
 
 
-" Show full file path on status line
-set statusline+=%F  
-
-
 "Auto-reload .vimrc
 "
 augroup reload_vimrc " {
     autocmd!
     autocmd BufWritePost $MYVIMRC source $MYVIMRC
 augroup END " }
-
-"SHIT! powerline still doesn't work
-"
-
-
-let g:Powerline_symbols = 'fancy'
-set nocompatible 
-
-
-"Study
-"au WinLeave * set nocursorline nocursorcolumn
-"au WinEnter * set cursorline cursorcolumn
-"set cursorline cursorcolumn
-
 
 "F1-F12 mappings
 "
@@ -219,44 +180,13 @@ imap <F3> <Esc> :NERDTreeToggle <CR>a<Left>
 map <F4> :set cursorcolumn! <CR><Esc>
 map <F5> :set cursorline! <CR><Esc>
 map <F6> :set spell! <CR><Esc>
-map <F7> :FufFile <CR><Esc>
+map <F7> :Files<CR>
 map <F8> :set hlsearch! <CR><Esc>
 imap <F8> <Esc> :set hlsearch! <CR><Esc>a<Left>
-map <F9> :AutoComplPopDisable <CR><Esc>
-imap <F9> <Esc>:AutoComplPopDisable <CR><Esc>a<Left>
+" F9: reserved (AutoComplPop removed — use built-in completion or coc/lsp)
+" map <F9> ...
 
 map <F10> gg<CR><C-w><C-w>gg<CR>:set scrollbind<CR>:diffthis<CR><C-w><C-w>:set scrollbind<CR>:diffthis<CR>
-
-"nnoremap <F9> :call ToggleAutoCompl()<cr>
-"
-"function" FoldColumnToggle()
-"    if &foldcolumn
-"        setlocal foldcolumn=0
-"    else
-"        setlocal foldcolumn=4
-"    endif
-"endfunction
-
-" Airline
-"""""""""""""
-"map <C-Enter> :set hlsearch! <CR><Esc>
-
-
-"Enable airline plugins
-
-"let g:airline_enable_fugitive=1
-"let g:airline_enable_syntastic=1
-"let g:airline_enable_bufferline=1
-"let g:airline#extensions#tabline#fnamemod = ':t'
-"let g:airline#extensions#tabline#enabled = 1
-""Change symbols
-"
-"let g:airline_left_sep = 'Ã¢â€“Â¶'
-"let g:airline_right_sep = 'Ã¢â€”â‚¬'
-"let g:airline_linecolumn_prefix = 'Ã‚Â¶ '
-"let g:airline_fugitive_prefix = 'Ã¢Å½â€¡ '
-"let g:airline_paste_symbol = 'ÃÂ' 
-
 
 " NERD_tree
 "
@@ -284,7 +214,7 @@ if &term=="xterm"
 endif
 
 
-set tags=/opt/interface/tags
+" Project tags (optional): set tags+=./tags;/opt/interface/tags
 highlight Pmenu ctermfg=10 ctermbg=8 guibg=Magenta
 highlight PmenuSel ctermfg=10
 set autochdir
@@ -330,103 +260,11 @@ cmap Q q
 cmap W w
 
 
-"vmap <expr> <LEFT> DVB_Drag('left')
-"vmap <expr> <RIGHT> DVB_Drag('right')
-"vmap <expr> <DOWN> DVB_Drag('down')
-"vmap <expr> <UP> DVB_Drag('up')
-"vmap <expr> D DVB_Duplicate('left')
-"
 vmap <expr> <S-LEFT> DVB_Drag('left') 
 vmap <expr> <S-RIGHT> DVB_Drag('right') 
 vmap <expr> <S-DOWN> DVB_Drag('down') 
 vmap <expr> <S-UP> DVB_Drag('up') 
 let g:DVB_TrimWS = 1
-"
-"
-""DRAGGING VISUAL BLOCK
-"
-"vnoremap K  xkP`[V`]
-"vnoremap U  xp`[V`]
-"vnoremap L  >gv
-"vnoremap H  <gv
-
-
-"toggles whether or not the current window is automatically zoomed
-"function! ToggleMaxWins()
-"        if exists('g:windowMax')
-"            au! maxCurrWin
-"            wincmd =
-"            unlet g:windowMax
-"        else
-"            augroup maxCurrWin
-"                " au BufEnter * wincmd _ | wincmd |
-"                "
-"                " only max it vertically
-"                au! WinEnter * wincmd _
-"            augroup END
-"            do maxCurrWin WinEnter
-"            let g:windowMax=1
-"        endif
-"    endfunction
-"    nnoremap <Leader>= :call ToggleMaxWins()<CR>
-
-
-
-
-
-
-
-
-
-
-
-
-
-"This function turns Rolodex Vim on or off for the current tab
-"If turning off, it sets all windows to equal height
-"function! ToggleRolodexTab()
-"    if exists("t:rolodex_tab") > 0
-"        unlet t:rolodex_tab
-"        call ClearRolodexSettings()
-"        execute "normal \<C-W>="
-"    else
-"        let t:rolodex_tab = 1
-"        call SetRolodexSettings()
-"    endif
-"endfunction
-" 
-""This function clears the Rolodex Vim settings and restores the previous values
-"function! ClearRolodexSettings()
-"    "Assume if one exists they all will
-"    if exists("g:remember_ea") > 0
-"        let &equalalways=g:remember_ea
-"        let &winheight=g:remember_wh
-"        let &winminheight=g:remember_wmh
-"        let &helpheight=g:remember_hh
-"    endif
-"endfunction
-" 
-""This function set the Rolodex Vim settings and remembers the previous values for later
-"function! SetRolodexSettings()
-"    if exists("t:rolodex_tab") > 0
-"        let g:remember_ea=&equalalways
-"        let g:remember_wh=&winheight
-"        let g:remember_wmh=&winminheight
-"        let g:remember_hh=&helpheight
-"        set noequalalways winminheight=0 winheight=9999 helpheight=9999
-"    endif
-"endfunction
-" 
-""These two autocmds make Vim change the settings whenever a new tab is selected
-""We have to use TabLeave to always clear them.  If we try and turn them off
-""in TabEnter, it is too late ( I think, since WinEnter has already been called and triggered the display)
-"au TabLeave * call ClearRolodexSettings()
-"au TabEnter * call SetRolodexSettings()
-" 
-""With this mapping, F2 toggles a tab to be Rolodex style
-"noremap <Leader>= :call ToggleRolodexTab()<CR>
-
-
 
 set wildmenu
 set wildmode=full
@@ -438,7 +276,6 @@ command! Wq wq
 command! W w
 command! Q q
 
- nmap <leader>i :silent! w! ~/clearmake.txt <CR>
 set matchpairs+=<:>
 set hidden
 set diffopt+=iwhite
@@ -449,21 +286,7 @@ au FileType xml setlocal foldmethod=syntax
 
 
 
-set makeprg=clearmake
 set shortmess+=I
-let g:syntastic_cpp_check_header = 1
-let g:syntastic_cpp_auto_refresh_includes = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-
-nmap <Leader>z :on<CR>
-nmap <Leader>a :vnew<CR><Esc> b1<CR>
-"nmap <Leader>a :vnew<CR><Esc>:b1<CR>
-"
-"
-"autocmd BufEnter * :TagbarOpen
-
-
 
 set noexpandtab
 set copyindent
@@ -493,14 +316,6 @@ nmap <Space>j <Plug>(quickhl-cword-toggle)
 nmap <Space>] <Plug>(quickhl-tag-toggle)
 noremap <Space>e :QuickhlManualReset<cr>
 
-"   autocmd BufEnter * :call rainbow_parenthsis#LoadSquare()
-"   autocmd BufEnter * :call rainbow_parenthsis#LoadRound()
-"   autocmd BufEnter * :call rainbow_parenthsis#LoadBraces()
-"   autocmd BufEnter * :call rainbow_parenthsis#Activate()
-"   nnoremap <leader><space> :nohl<cr> :match None<cr>
-
-
-
   nnoremap di" di"<left>m" 
   nnoremap di' di'<left>m' 
   nnoremap dib f(dib<left>mb 
@@ -525,23 +340,9 @@ set virtualedit=block
 "
 nnoremap gp `[v`]`
 set wildignorecase
-filetype plugin on 
 set omnifunc=syntaxcomplete#Complete
 
 map <Leader>vp :VimuxPromptCommand<CR>
-
-
-
-
-nmap <Space>m <Plug>(quickhl-manual-this)
-xmap <Space>m <Plug>(quickhl-manual-this)
-nmap <Space>M <Plug>(quickhl-manual-reset)
-xmap <Space>M <Plug>(quickhl-manual-reset)
-
-nmap <Space>j <Plug>(quickhl-cword-toggle)
-nmap <Space>] <Plug>(quickhl-tag-toggle)
-
-
 
 map H <Plug>(operator-quickhl-manual-this-motion)
 colorscheme 256-jungle

@@ -1,30 +1,33 @@
-#!/bin/bash
-############################
-# .make.sh
-# This script creates symlinks from the home directory to any desired dotfiles in ~/dotfiles
-############################
+#!/usr/bin/env bash
+# Create symlinks from ~/dotfiles2014 (or repo checkout) into $HOME.
+set -euo pipefail
 
-########## Variables
+dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+olddir="${HOME}/dotfiles_old"
+files="bashrc vimrc zshrc zpreztorc tmux.conf"
 
-dir=~/dotfiles                    # dotfiles directory
-olddir=~/dotfiles_old             # old dotfiles backup directory
-files="bashrc vimrc zshrc zpreztorc tmux.conf pentadactylrc vimperatorrc"    # list of files/folders to symlink in homedir
+echo "Creating ${olddir} for backup of any existing dotfiles in ~"
+mkdir -p "${olddir}"
 
-##########
-
-# create dotfiles_old in homedir
-echo "Creating $olddir for backup of any existing dotfiles in ~"
-mkdir -p $olddir
-echo "...done"
-
-# move any existing dotfiles in homedir to dotfiles_old directory, then create symlinks 
-echo "Moving any existing dotfiles from ~ to $olddir"
-for file in $files; do
-        if [ -f ~/.$file  ];
-    then
-    	mv ~/.$file ~/dotfiles_old/
-	fi
-    echo "Creating symlink to $file in home directory."
-    ln -s $dir/.$file ~/.$file
+for file in ${files}; do
+  if [[ -e "${HOME}/.${file}" && ! -L "${HOME}/.${file}" ]]; then
+    echo "Backing up ~/.${file} -> ${olddir}/"
+    mv "${HOME}/.${file}" "${olddir}/"
+  elif [[ -L "${HOME}/.${file}" ]]; then
+    echo "Removing old symlink ~/.${file}"
+    rm "${HOME}/.${file}"
+  fi
+  echo "Linking ${dir}/.${file} -> ~/.${file}"
+  ln -sf "${dir}/.${file}" "${HOME}/.${file}"
 done
-    ln -s $dir/vim ~/.vim
+
+if [[ -d "${HOME}/.vim" && ! -L "${HOME}/.vim" ]]; then
+  echo "Backing up ~/.vim -> ${olddir}/vim"
+  mv "${HOME}/.vim" "${olddir}/vim"
+elif [[ -L "${HOME}/.vim" ]]; then
+  rm "${HOME}/.vim"
+fi
+echo "Linking ${dir}/vim -> ~/.vim"
+ln -sf "${dir}/vim" "${HOME}/.vim"
+
+echo "Done. Install vim-plug, then in vim run :PlugInstall"

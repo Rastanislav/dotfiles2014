@@ -1,20 +1,16 @@
+# Install npm global packages without sudo (PEP 668 / NodeSource friendly)
+# 1. mkdir -p ~/.npm-global
+# 2. npm config set prefix '~/.npm-global'
+# 3. Add to ~/.zshrc or ~/.profile:
+#    export PATH=~/.npm-global/bin:$PATH
+#
+# On Ubuntu 26, prefer: npm from NodeSource + this prefix, or use pipx for Python CLIs.
 
+mkdir -p "${HOME}/.npm-global"
+npm config set prefix "${HOME}/.npm-global"
 
-    Back-up your computer before you start.
+if ! grep -q 'npm-global/bin' "${HOME}/.zshrc" 2>/dev/null; then
+  printf '\nexport PATH="${HOME}/.npm-global/bin:${PATH}"\n' >> "${HOME}/.zshrc"
+fi
 
-    Make a directory for global installations:
-
-     mkdir ~/.npm-global
-
-    Configure npm to use the new directory path:
-
-     npm config set prefix '~/.npm-global'
-
-    Open or create a ~/.profile file and add this line:
-
-     export PATH=~/.npm-global/bin:$PATH
-
-    Back on the command line, update your system variables:
-
-     source ~/.profile
-
+echo "Done. Restart shell or: source ~/.zshrc"
