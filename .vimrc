@@ -7,6 +7,9 @@ filetype plugin indent on
 if filereadable(expand('~/.vim/autoload/plug.vim'))
   call plug#begin(expand('~/.vim/plugged'))
 
+  " glowshi: custom maps at end of vimrc (; is mapped to : separately)
+  let g:glowshi_ft_no_default_key_mappings = 1
+
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
   Plug 'will133/vim-dirdiff'
   Plug 'chrisbra/vim-diff-enhanced'
@@ -22,7 +25,7 @@ if filereadable(expand('~/.vim/autoload/plug.vim'))
   Plug 'kshenoy/vim-signature'
   Plug 'mileszs/ack.vim'
   Plug 'godlygeek/tabular'
-  Plug 'vim-scripts/Mark--Karkat'
+  " Mark--Karkat removed: hijacks * and # (conflicts with native search)
   Plug 'vim-airline/vim-airline'
   Plug 'benmills/vimux'
   Plug 'MarcWeber/vim-addon-mw-utils'
@@ -36,7 +39,7 @@ if filereadable(expand('~/.vim/autoload/plug.vim'))
   Plug 't9md/vim-quickhl'
   Plug 'preservim/nerdcommenter'
   Plug 'christoomey/vim-tmux-navigator'
-  Plug 'vim-scripts/ccase.vim'
+  " ccase.vim removed: broken on Vim 9+ (E1208 -complete errors)
   Plug 'mhinz/vim-startify'
   Plug 'krisajenkins/vim-pipe'
   Plug 'tmhedberg/matchit'
@@ -44,6 +47,26 @@ if filereadable(expand('~/.vim/autoload/plug.vim'))
 
   call plug#end()
 endif
+
+function! s:setup_glowshi_maps() abort
+  if !exists('g:loaded_glowshi_ft')
+    return
+  endif
+  for [lhs, plug] in [
+        \ ['f', '(glowshi-ft-f)'],
+        \ ['F', '(glowshi-ft-F)'],
+        \ ['t', '(glowshi-ft-t)'],
+        \ ['T', '(glowshi-ft-T)'],
+        \ [',', '(glowshi-ft-opposite)'],
+        \ ]
+    silent! execute 'unmap' lhs
+    execute 'noremap' lhs '<Plug>' . plug
+  endfor
+endfunction
+augroup dotfiles_glowshi
+  autocmd!
+  autocmd VimEnter * call s:setup_glowshi_maps()
+augroup END
 
 " Prefer ripgrep for :Ack if available
 if executable('rg')
@@ -265,6 +288,92 @@ vmap <expr> <S-RIGHT> DVB_Drag('right')
 vmap <expr> <S-DOWN> DVB_Drag('down') 
 vmap <expr> <S-UP> DVB_Drag('up') 
 let g:DVB_TrimWS = 1
+"
+"
+""DRAGGING VISUAL BLOCK
+"
+"vnoremap K  xkP`[V`]
+"vnoremap U  xp`[V`]
+"vnoremap L  >gv
+"vnoremap H  <gv
+
+
+"toggles whether or not the current window is automatically zoomed
+"function! ToggleMaxWins()
+"        if exists('g:windowMax')
+"            au! maxCurrWin
+"            wincmd =
+"            unlet g:windowMax
+"        else
+"            augroup maxCurrWin
+"                " au BufEnter * wincmd _ | wincmd |
+"                "
+"                " only max it vertically
+"                au! WinEnter * wincmd _
+"            augroup END
+"            do maxCurrWin WinEnter
+"            let g:windowMax=1
+"        endif
+"    endfunction
+"    nnoremap <Leader>= :call ToggleMaxWins()<CR>
+
+
+
+
+
+
+
+
+
+
+
+
+
+"This function turns Rolodex Vim on or off for the current tab
+"If turning off, it sets all windows to equal height
+"function! ToggleRolodexTab()
+"    if exists("t:rolodex_tab") > 0
+"        unlet t:rolodex_tab
+"        call ClearRolodexSettings()
+"        execute "normal \<C-W>="
+"    else
+"        let t:rolodex_tab = 1
+"        call SetRolodexSettings()
+"    endif
+"endfunction
+" 
+""This function clears the Rolodex Vim settings and restores the previous values
+"function! ClearRolodexSettings()
+"    "Assume if one exists they all will
+"    if exists("g:remember_ea") > 0
+"        let &equalalways=g:remember_ea
+"        let &winheight=g:remember_wh
+"        let &winminheight=g:remember_wmh
+"        let &helpheight=g:remember_hh
+"    endif
+"endfunction
+" 
+""This function set the Rolodex Vim settings and remembers the previous values for later
+"function! SetRolodexSettings()
+"    if exists("t:rolodex_tab") > 0
+"        let g:remember_ea=&equalalways
+"        let g:remember_wh=&winheight
+"        let g:remember_wmh=&winminheight
+"        let g:remember_hh=&helpheight
+"        set noequalalways winminheight=0 winheight=9999 helpheight=9999
+"    endif
+"endfunction
+" 
+""These two autocmds make Vim change the settings whenever a new tab is selected
+""We have to use TabLeave to always clear them.  If we try and turn them off
+""in TabEnter, it is too late ( I think, since WinEnter has already been called and triggered the display)
+"au TabLeave * call ClearRolodexSettings()
+"au TabEnter * call SetRolodexSettings()
+" 
+""With this mapping, F2 toggles a tab to be Rolodex style
+"noremap <Leader>= :call ToggleRolodexTab()<CR>
+
+
 
 set wildmenu
 set wildmode=full
@@ -407,18 +516,7 @@ map ; :
  vmap <Enter> <Plug>(EasyAlign)
 
 
-"let g:glowshi_ft_no_default_key_mappings = s:true
-map f <plug>(glowshi-ft-f)
-map F <plug>(glowshi-ft-F)
-map t <plug>(glowshi-ft-t)
-map T <plug>(glowshi-ft-T)
-map , <plug>(glowshi-ft-opposite)
-
-" highlight
+" glowshi-ft (mappings applied in s:setup_glowshi_maps after plugins load)
 let g:glowshi_ft_selected_hl_link = 'White'
 let g:glowshi_ft_candidates_hl_link = 'Black'
-
-
-
-" timeout
 let g:glowshi_ft_timeoutlen = 99999
